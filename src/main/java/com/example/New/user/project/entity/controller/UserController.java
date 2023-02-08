@@ -16,10 +16,12 @@ public class UserController {
     @GetMapping("/user")
     public String sayHello () {
         return "Hello from User";
+
     }
     @GetMapping("/get/{id}")
     public User getUser (@PathVariable Long id) {
         return userRepository.findById(id).get();
+
     }
 
 
