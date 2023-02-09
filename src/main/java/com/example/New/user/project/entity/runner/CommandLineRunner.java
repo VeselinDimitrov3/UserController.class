@@ -9,11 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Component
 public class CommandLineRunner implements org.springframework.boot.CommandLineRunner {
-
-
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -23,17 +22,17 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
     public void run(String... args) throws Exception {
         createUser();
         createAddress();
+        getUser();
     }
     public void createUser() {
         User user = new User();
-        user.setId(1L);
         user.setFirst_name("Ivan");
         user.setLast_name("Ivanov");
         user.setPhone_number("3453425234");
         user.setEmail("ipofdhjifdh@gmail.com");
         user.setCreatedAt(Instant.now());
+
         User user2 = new User();
-        user2.setId(2L);
         user2.setFirst_name("Petar");
         user2.setLast_name("Georgiev");
         user2.setPhone_number("54363467363");
@@ -47,14 +46,12 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
 
     public void createAddress() {
         Address address = new Address();
-        address.setId(1L);
         address.setCountry("Bulgaria");
         address.setCity("Varna");
         address.setStreet("Boulevard Vladislav Varnenchik");
         address.setStreet_number(70);
 
         Address address2 = new Address();
-        address2.setId(2L);
         address2.setCountry("Bulgaria");
         address2.setCity("Sofia");
         address2.setStreet("Mladost");
@@ -63,6 +60,11 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
         addressRepository.save(address);
         addressRepository.save(address2);
 
+
+    }
+    public void getUser () {
+        Optional<User> user = userRepository.findById(1L);
+        user.ifPresent(value -> System.out.println());
 
     }
 

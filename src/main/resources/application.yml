@@ -7,10 +7,9 @@ spring:
         database-platform: org.hibernate.dialect.MySQLDialect
         hibernate:
             ddl-auto: create
-            show-sql: true
-
-logging:
-    level:
-        root: ERROR
-        org:
-            springframework: DEBUG
+        show-sql: true
+#logging:
+#    level:
+#        root: ERROR
+#        org:
+#            springframework: DEBUG

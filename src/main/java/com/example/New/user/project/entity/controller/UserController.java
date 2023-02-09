@@ -7,6 +7,8 @@ import com.example.New.user.project.entity.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+
 
 @RestController
 @RequestMapping(path = "/users")
@@ -26,8 +28,11 @@ public class UserController {
     @PostMapping(path = "/add")
     public User createUser (@RequestBody User user) {
         return userService.saveUsers(user);
-
-
+    }
+    @DeleteMapping
+    public String deleteUser (@PathVariable Long id) {
+        this.userService.deleteById(id);
+        return String.format("Table with this id is deleted", id);
     }
 
 
