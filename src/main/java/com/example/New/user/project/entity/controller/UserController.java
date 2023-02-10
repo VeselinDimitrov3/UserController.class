@@ -29,7 +29,7 @@ public class UserController {
     public User createUser (@RequestBody User user) {
         return userService.saveUsers(user);
     }
-    @DeleteMapping
+    @DeleteMapping(path = "/delete/{id}")
     public String deleteUser (@PathVariable Long id) {
         this.userService.deleteById(id);
         return String.format("Table with this id is deleted", id);
