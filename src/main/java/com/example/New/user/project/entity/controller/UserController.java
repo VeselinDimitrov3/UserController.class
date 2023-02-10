@@ -33,7 +33,7 @@ public class UserController {
     public String deleteUser (@PathVariable Long id) {
         this.userService.deleteById(id);
         return String.format("Table with this id is deleted", id);
-    }
 
+    }
 
 }
