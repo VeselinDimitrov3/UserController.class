@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @Getter
 @Setter
@@ -23,4 +26,7 @@ public class Address {
     private int street_number;
 
 
+    @ManyToOne()
+    @JoinColumn(name = "UserAddress_id", referencedColumnName = "id")
+    private User user;
 }

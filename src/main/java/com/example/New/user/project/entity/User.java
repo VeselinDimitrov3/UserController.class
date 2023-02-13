@@ -4,16 +4,17 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.context.annotation.Role;
 
 
 import java.time.Instant;
+import java.util.Set;
 
 
 @Data
 @Getter
 @Setter
 @Entity(name = "Users")
-
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,5 +29,16 @@ public class User {
     private String email;
     @Column(name = "date of creation")
     private Instant createdAt;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Address> addresses;
+
+    @ManyToMany
+    @JoinTable (
+            name = "user_roles",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+    )
+    Set<Role> roles;
 
 }

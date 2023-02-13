@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
+import java.util.Optional;
 
 
 @RestController
@@ -24,6 +25,7 @@ public class UserController {
     @GetMapping(path = "/{id}")
     public User getUser (@PathVariable Long id) {
         return this.userService.getById(id);
+
     }
     @PostMapping(path = "/add")
     public User createUser (@RequestBody User user) {
@@ -32,7 +34,7 @@ public class UserController {
     @DeleteMapping(path = "/delete/{id}")
     public String deleteUser (@PathVariable Long id) {
         this.userService.deleteById(id);
-        return String.format("Table with this id is deleted", id);
+        return String.format("User with this id is deleted", id);
 
     }
 

@@ -3,26 +3,35 @@ package com.example.New.user.project.entity.runner;
 import com.example.New.user.project.entity.Address;
 import com.example.New.user.project.entity.User;
 import com.example.New.user.project.entity.repositories.AddressRepository;
+import com.example.New.user.project.entity.repositories.RoleRepository;
 import com.example.New.user.project.entity.repositories.UserRepository;
 import org.hibernate.mapping.Table;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Component
-public class CommandLineRunner implements org.springframework.boot.CommandLineRunner {
+public class CommandRunner implements CommandLineRunner {
     @Autowired
     UserRepository userRepository;
     @Autowired
     AddressRepository addressRepository;
+    @Autowired
+    RoleRepository roleRepository;
 
     @Override
     public void run(String... args) throws Exception {
         createUser();
         createAddress();
         getUser();
+        getAddress();
+
+
     }
     public void createUser() {
         User user = new User();
@@ -42,7 +51,35 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
         userRepository.save(user);
         userRepository.save(user2);
 
+        Set<User> users1 = new HashSet<>();
+        users1.add(user);
+
+        Set<User> users2 = new HashSet<>();
+        users2.add(user2);
+
+        Set<User> users3 = new HashSet<>();
+        users3.add(user);
+        users3.add(user2);
+
+        Role role1 = new Role();
+        role1.setRole(UserRole.ADMIN);
+        role1.setUsers(users1);
+
+        Role role2 = new Role();
+        role2.setRole(UserRole.USER);
+        role2.setUsers(users2);
+
+        Role role3 = new Role();
+        role3.setRole(UserRole.CLIENT);
+        role3.setUsers(users3);
+
+        roleRepository.save(role1);
+        roleRepository.save(role2);
+        roleRepository.save(role3);
+
+
     }
+
 
     public void createAddress() {
         Address address = new Address();
@@ -61,11 +98,21 @@ public class CommandLineRunner implements org.springframework.boot.CommandLineRu
         addressRepository.save(address2);
 
 
+
+
     }
+
+
     public void getUser () {
         Optional<User> user = userRepository.findById(1L);
         user.ifPresent(value -> System.out.println());
 
     }
+
+    public void getAddress () {
+        Optional<Address> address = addressRepository.findById(1L);
+        address.ifPresent(value -> System.out.println());
+    }
+
 
 }
