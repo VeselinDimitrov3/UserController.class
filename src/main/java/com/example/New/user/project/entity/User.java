@@ -1,20 +1,21 @@
 package com.example.New.user.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.context.annotation.Role;
+import lombok.*;
 
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 
-
-@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "Users")
+@Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,15 +31,19 @@ public class User {
     @Column(name = "date of creation")
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<Address> addresses;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<User> users = new HashSet<>();
 
     @ManyToMany
-    @JoinTable (
+    @JsonManagedReference
+    @JoinTable(
             name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+            inverseJoinColumns = {@JoinColumn(name = "roles_id")}
     )
-    Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
+
 
 }

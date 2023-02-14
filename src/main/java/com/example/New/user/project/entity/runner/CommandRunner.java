@@ -2,16 +2,17 @@ package com.example.New.user.project.entity.runner;
 
 import com.example.New.user.project.entity.Address;
 import com.example.New.user.project.entity.User;
+import com.example.New.user.project.entity.Role;
 import com.example.New.user.project.entity.repositories.AddressRepository;
 import com.example.New.user.project.entity.repositories.RoleRepository;
 import com.example.New.user.project.entity.repositories.UserRepository;
-import org.hibernate.mapping.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,14 +27,14 @@ public class CommandRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        createUser();
-        createAddress();
-        getUser();
-        getAddress();
 
+        Role role1 = new Role();
+        role1.setRole("ADMIN");
+        Role role2 = new Role();
+        role2.setRole("USER");
+        Role role3 = new Role();
+        role3.setRole("CLIENT");
 
-    }
-    public void createUser() {
         User user = new User();
         user.setFirst_name("Ivan");
         user.setLast_name("Ivanov");
@@ -48,40 +49,17 @@ public class CommandRunner implements CommandLineRunner {
         user2.setEmail("gfjhtrurtuy@gmail.com");
         user2.setCreatedAt(Instant.now());
 
+        List<Role> rolesList = List.of(role1, role2, role3);
+        List<Role> savedRoles = roleRepository.saveAll(rolesList);
+
+        Set<Role> rolesForUser = new HashSet<>(savedRoles);
+        user.setRoles(rolesForUser);
+
         userRepository.save(user);
         userRepository.save(user2);
 
-        Set<User> users1 = new HashSet<>();
-        users1.add(user);
+        System.out.println(savedRoles);
 
-        Set<User> users2 = new HashSet<>();
-        users2.add(user2);
-
-        Set<User> users3 = new HashSet<>();
-        users3.add(user);
-        users3.add(user2);
-
-        Role role1 = new Role();
-        role1.setRole(UserRole.ADMIN);
-        role1.setUsers(users1);
-
-        Role role2 = new Role();
-        role2.setRole(UserRole.USER);
-        role2.setUsers(users2);
-
-        Role role3 = new Role();
-        role3.setRole(UserRole.CLIENT);
-        role3.setUsers(users3);
-
-        roleRepository.save(role1);
-        roleRepository.save(role2);
-        roleRepository.save(role3);
-
-
-    }
-
-
-    public void createAddress() {
         Address address = new Address();
         address.setCountry("Bulgaria");
         address.setCity("Varna");
@@ -97,11 +75,10 @@ public class CommandRunner implements CommandLineRunner {
         addressRepository.save(address);
         addressRepository.save(address2);
 
-
-
+        getUser();
+        getAddress();
 
     }
-
 
     public void getUser () {
         Optional<User> user = userRepository.findById(1L);

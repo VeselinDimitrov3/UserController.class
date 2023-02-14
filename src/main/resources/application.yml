@@ -1,7 +1,7 @@
 spring:
     datasource:
         password: ''
-        url: jdbc:mysql://127.0.0.1:3306/users_db?createDatabaseIfNotExist=true
+        url: jdbc:mysql://127.0.0.1:3306/userRoles_db?createDatabaseIfNotExist=true
         username: root
     jpa:
         database-platform: org.hibernate.dialect.MySQLDialect
