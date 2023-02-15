@@ -33,11 +33,9 @@ public class User {
 
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonManagedReference
     private Set<User> users = new HashSet<>();
 
     @ManyToMany
-    @JsonManagedReference
     @JoinTable(
             name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id")},
