@@ -23,11 +23,7 @@ public class Role {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private String role;
-
-    @ManyToMany(mappedBy = "roles")
-    @JsonBackReference
-    private Set<User> users = new HashSet<>();
+    private String authority;
 
 
 }

@@ -11,10 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class CommandRunner implements CommandLineRunner {
@@ -27,38 +24,62 @@ public class CommandRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        createRole();
+        createUsers();
+        createAddress();
+        getUser();
+        getAddress();
+    }
 
+    public List<Role> createRole() {
         Role role1 = new Role();
-        role1.setRole("ADMIN");
+        role1.setAuthority("ADMIN");
         Role role2 = new Role();
-        role2.setRole("USER");
+        role2.setAuthority("USER");
         Role role3 = new Role();
-        role3.setRole("CLIENT");
+        role3.setAuthority("CLIENT");
+        List<Role> roles = List.of(role1, role2, role3);
+        roleRepository.saveAll(roles);
+        return roles;
+    }
 
+    public void createUsers() {
+        List<Role> authority = createRole();
+        List<Address> addresses = createAddress();
         User user = new User();
         user.setFirst_name("Ivan");
         user.setLast_name("Ivanov");
         user.setPhone_number("3453425234");
         user.setEmail("ipofdhjifdh@gmail.com");
+        user.setPassword("");
         user.setCreatedAt(Instant.now());
+        Set<Role> roleList = new HashSet<>(authority);
+        user.setAuthority(Collections.singleton(authority.get(0)));
 
+
+
+        List<Role> authority2 = createRole();
+        List<Address> addresses2 = createAddress();
         User user2 = new User();
         user2.setFirst_name("Petar");
         user2.setLast_name("Georgiev");
         user2.setPhone_number("54363467363");
         user2.setEmail("gfjhtrurtuy@gmail.com");
+        user2.setPassword("");
         user2.setCreatedAt(Instant.now());
+        Set<Role> roleList2 = new HashSet<>(authority2);
+        user2.setAuthority(Collections.singleton(authority.get(1)));
 
-        List<Role> rolesList = List.of(role1, role2, role3);
-        List<Role> savedRoles = roleRepository.saveAll(rolesList);
 
-        Set<Role> rolesForUser = new HashSet<>(savedRoles);
-        user.setRoles(rolesForUser);
+        roleRepository.saveAll(roleList);
+        roleRepository.saveAll(roleList2);
 
         userRepository.save(user);
         userRepository.save(user2);
 
-        System.out.println(savedRoles);
+    }
+
+    public List<Address> createAddress() {
 
         Address address = new Address();
         address.setCountry("Bulgaria");
@@ -72,12 +93,10 @@ public class CommandRunner implements CommandLineRunner {
         address2.setStreet("Mladost");
         address2.setStreet_number(88);
 
-        addressRepository.save(address);
-        addressRepository.save(address2);
+        List<Address> addresses = List.of(address, address2);
+        addressRepository.saveAll(addresses);
 
-        getUser();
-        getAddress();
-
+        return addresses;
     }
 
     public void getUser () {
