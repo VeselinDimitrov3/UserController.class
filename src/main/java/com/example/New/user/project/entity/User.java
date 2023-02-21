@@ -1,13 +1,13 @@
 package com.example.New.user.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Builder
 @AllArgsConstructor
@@ -28,11 +28,14 @@ public class User {
     private String phone_number;
     @Column(name = "email")
     private String email;
+    @Column(name = "password")
+    private String password;
     @Column(name = "date of creation")
     private Instant createdAt;
 
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<User> users = new HashSet<>();
 
     @ManyToMany
@@ -41,7 +44,5 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "roles_id")}
     )
-    private Set<Role> roles = new HashSet<>();
-
-
+    private Set<Role> authority;
 }
